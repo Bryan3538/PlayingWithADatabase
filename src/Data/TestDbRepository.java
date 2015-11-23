@@ -5,7 +5,6 @@ import Models.Employee;
 import Models.Location;
 
 import javax.sql.DataSource;
-import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,7 @@ public class TestDbRepository {
         return emps;
     }
 
-    public Employee findEmployeeByID(int employeeID) {
+    public Employee findEmployeeByID(int employeeID) throws SQLException {
         Employee emp = null;
         DataSource ds = DataSourceFactory.getMySqlDataSource();
         Connection conn = null;
@@ -71,7 +70,7 @@ public class TestDbRepository {
             stmt.setInt(1, employeeID);
             results = stmt.executeQuery();
 
-            if(results.next()) {
+            if (results.next()) {
                 emp = new Employee();
                 emp.setID(employeeID);
                 emp.setFirstName(results.getString("firstname"));
@@ -80,16 +79,17 @@ public class TestDbRepository {
                 emp.setLocation(results.getInt("locationid"));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            if (results != null) results.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
         }
-
 
         return emp;
     }
 
     //Department stuff
-    public Department findDepartmentById(int departmentNumber) {
+    public Department findDepartmentById(int departmentNumber) throws SQLException {
         Department dept = null;
         DataSource ds = DataSourceFactory.getMySqlDataSource();
         Connection conn = null;
@@ -103,15 +103,17 @@ public class TestDbRepository {
             stmt.setInt(1, departmentNumber);
             results = stmt.executeQuery();
 
-            if(results.next()) {
+            if (results.next()) {
                 dept = new Department();
                 dept.setDepartmentNumber(departmentNumber);
                 dept.setDepartmentName(results.getString("DepartmentName"));
                 dept.setSupervisor(results.getInt("supervisorid"));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            if (results != null) results.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
         }
 
 
@@ -120,7 +122,7 @@ public class TestDbRepository {
 
 
     //Location stuff
-    public Location findLocationById(int locationID) {
+    public Location findLocationById(int locationID) throws SQLException {
         Location loc = null;
         DataSource ds = DataSourceFactory.getMySqlDataSource();
         Connection conn = null;
@@ -142,16 +144,10 @@ public class TestDbRepository {
                 loc.setZip(results.getString("Zip"));
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
-            try {
-                if (results != null) results.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+            if (results != null) results.close();
+            if (stmt != null) stmt.close();
+            if (conn != null) conn.close();
         }
 
         return loc;

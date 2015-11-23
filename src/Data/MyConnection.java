@@ -7,6 +7,7 @@ import java.util.Properties;
 
 /**
  * Created by Bryan on 11/20/2015.
+ * Ignore this one.
  */
 public class MyConnection {
     private Connection conn;

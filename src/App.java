@@ -3,6 +3,7 @@ import Models.Department;
 import Models.Employee;
 import Models.Location;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         TestDbRepository repo = new TestDbRepository();
         long start = System.currentTimeMillis();
         List<Employee> emps = repo.getAllEmployees();
