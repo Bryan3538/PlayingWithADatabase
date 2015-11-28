@@ -1,4 +1,6 @@
-import Data.TestDbRepository;
+import Data.DepartmentRepository;
+import Data.EmployeeRepository;
+import Data.LocationRepository;
 import Models.Department;
 import Models.Employee;
 import Models.Location;
@@ -12,15 +14,17 @@ import java.util.List;
 public class App {
 
     public static void main(String[] args) throws SQLException {
-        TestDbRepository repo = new TestDbRepository();
+        EmployeeRepository empRepo = new EmployeeRepository();
+        LocationRepository locRepo = new LocationRepository();
+        DepartmentRepository deptRepo = new DepartmentRepository();
         long start = System.currentTimeMillis();
-        List<Employee> emps = repo.getAllEmployees();
+        List<Employee> emps = empRepo.getAllEmployees();
         long end = System.currentTimeMillis();
         System.out.println(String.format("Query took %d ms.", end-start));
 
         for(Employee emp : emps) {
-            Location loc = repo.findLocationById(emp.getLocation());
-            Department dept = repo.findDepartmentById(emp.getDept());
+            Location loc = locRepo.findLocationById(emp.getLocation());
+            Department dept = deptRepo.findDepartmentById(emp.getDept());
 
             System.out.println(String.format("Emp ID:\t\t%d", emp.getID()));
             System.out.println(String.format("First Name:\t%s", emp.getFirstName()));
@@ -30,10 +34,10 @@ public class App {
             System.out.println("--------------------------------");
         }
 
-        Employee emp = repo.findEmployeeByID(1);
+        Employee emp = empRepo.findEmployeeByID(1);
         System.out.println(emp);
         System.out.println("--------------------------------");
-        emp =repo.findEmployeeByID(-1);
+        emp = empRepo.findEmployeeByID(-1);
         System.out.println(emp);
 
     }
